@@ -36,9 +36,14 @@
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
 		"tailwindcss": "^4.0.0",
-		"typescript": "^5.0.0",
+		"typescript": "^5.8.2",
 		"typescript-eslint": "^8.20.0",
 		"vite": "^6.0.0",
 		"vitest": "^3.0.0"
+	},
+	"dependencies": {
+		"dexie": "^4.0.11",
+		"svelte-language-server": "^0.17.11",
+		"typescript-language-server": "^4.3.4"
 	}
 }
