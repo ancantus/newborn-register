@@ -1,2 +1,14 @@
+<script>
+	import ActivityList from './ActivityList.svelte';
+	import TimerControls from './TimerControls.svelte';
+</script>
+
 <h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+
+<div>
+	<h2>Timer Controls:</h2>
+	<br />
+	<TimerControls />
+</div>
+
+<ActivityList limit={10} />
