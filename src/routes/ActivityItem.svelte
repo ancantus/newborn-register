@@ -3,6 +3,7 @@
 	import { db } from '$lib/db';
 	import type { ActivityRecord, RecordIdentifier } from '$lib/db';
 	import { stateQuery } from '$lib/stateQuery.svelte';
+	import TimerControls from './TimerControls.svelte';
 
 	// primary key of the activity this item renders
 	let { id }: { id: number } = $props();
@@ -76,12 +77,43 @@
 	}
 
 	function activityStatus(record: ActivityRecord, currentTime: number) {
-		const elapsedTime = currentTime - record.start;
-		switch (record.recordId.tableName) {
+		const timestamp = formatDatetime(record.start);
+		const elapsedTime = formatElapsedTime(currentTime - record.start);
+		const name = activityName(record.recordId.tableName);
+		return `${timestamp}: ${name} for ${elapsedTime}`;
+	}
+
+	function formatDatetime(timestamp: number) {
+		const d = new Date(timestamp);
+		const hours = Math.floor(d.getHours() % 12)
+			.toString()
+			.padStart(2, '0');
+		const minutes = d.getMinutes().toString().padStart(2, '0');
+		return `${hours}:${minutes} ${d.getHours() / 12 < 1 ? 'AM' : 'PM'}`;
+	}
+
+	function formatElapsedTime(duration: number) {
+		const totalSeconds = Math.floor(duration / 1000);
+		const seconds = `${totalSeconds % 60}s`;
+		if (totalSeconds < 60) {
+			return seconds;
+		}
+
+		const minutes = `${Math.floor((totalSeconds / 60) % 60)}m`;
+		if (totalSeconds < 60 * 60) {
+			return `${minutes} ${seconds}`;
+		}
+
+		const hours = `${Math.floor(totalSeconds / (60 * 60))}h`;
+		return `${hours} ${minutes} ${seconds}`;
+	}
+
+	function activityName(tableName: string) {
+		switch (tableName) {
 			case 'feedings':
-				return `Feed: ${elapsedTime}`;
+				return `Feed`;
 			case 'sleeps':
-				return `Sleep: ${elapsedTime}`;
+				return `Sleep`;
 		}
 	}
 
@@ -96,17 +128,25 @@
 </script>
 
 {#if activity}
-	<div>
+	<div class="justify-streach flex items-center rounded border p-2 shadow-lg">
 		{#if active}
-			<button onclick={play}>Play</button>
-			<span>{activityStatus(activity, activity.end || 0)}</span>
+			<button class="" onclick={play}
+				><img class="h-8 object-contain" src="images/play.svg" alt="Play" /></button
+			>
+			<span class="flex-grow text-lg">{activityStatus(activity, activity.end || 0)}</span>
 		{:else}
-			<button onclick={pause}>Pause</button>
-			<span>{activityStatus(activity, time)}</span>
+			<button class="" onclick={pause}
+				><img class="h-8 object-contain" src="images/pause.svg" alt="Pause" /></button
+			>
+			<span class="flex-grow text-lg">{activityStatus(activity, time)}</span>
 		{/if}
-		<span>
-			<button onclick={edit}>Edit</button>
-			<button onclick={trash}>Delete</button>
+		<span class="right-0">
+			<button onclick={edit}
+				><img class="h-8 object-contain" src="images/edit.svg" alt="Edit" /></button
+			>
+			<button onclick={trash}
+				><img class="h-8 object-contain" src="images/delete.svg" alt="Delete" /></button
+			>
 		</span>
 	</div>
 {/if}

@@ -12,12 +12,11 @@
 	let activities = $derived(_activities.current || []);
 </script>
 
-<h2>Activity Feed:</h2>
-<br />
-<ol>
+<h2 class="text-xl">Activity Feed:</h2>
+<ol class="container max-w-1/2 p-2">
 	{#if activities}
 		{#each activities as activity (activity.id)}
-			<ActivityItem id={activity.id} />
+			<li class="p-2"><ActivityItem id={activity.id} /></li>
 		{/each}
 	{/if}
 </ol>

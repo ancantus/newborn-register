@@ -31,6 +31,10 @@
 </script>
 
 <div>
-	<button onclick={startFeedingTimer}>Feeding</button>
-	<button onclick={startSleepingTimer}>Sleeping</button>
+	<button onclick={startFeedingTimer}
+		><img class="h-24" src="images/bottle.svg" alt="Start Feed Timer" /></button
+	>
+	<button onclick={startSleepingTimer}
+		><img class="h-24" src="images/sleep.svg" alt="Start Sleep Timer" /></button
+	>
 </div>
